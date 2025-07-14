@@ -7,6 +7,11 @@ import {
   type MetaFunction,
   type LinksFunction,
 } from 'react-router';
+import { ThemeProvider } from '@mui/material/styles';
+import { CssBaseline } from '@mui/material';
+import { Provider } from 'react-redux';
+import { CustomThemeProvider, useTheme } from './theme/ThemeContext';
+import { store } from './store/store';
 
 import { AppNav } from './app-nav';
 
@@ -25,9 +30,26 @@ export const links: LinksFunction = () => [
   },
   {
     rel: 'stylesheet',
-    href: 'https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap',
+    href: 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap',
   },
 ];
+
+// Internal component that consumes the theme
+function AppContent({ children }: { children: React.ReactNode }) {
+  const { theme } = useTheme();
+
+  return (
+    <ThemeProvider theme={theme}>
+      <CssBaseline />
+      <AppNav />
+      <div style={{ paddingTop: '64px' }}>
+        {' '}
+        {/* Add padding to account for fixed header */}
+        {children}
+      </div>
+    </ThemeProvider>
+  );
+}
 
 export function Layout({ children }: { children: React.ReactNode }) {
   return (
@@ -39,8 +61,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <Links />
       </head>
       <body>
-        <AppNav />
-        {children}
+        <Provider store={store}>
+          <CustomThemeProvider>
+            <AppContent>{children}</AppContent>
+          </CustomThemeProvider>
+        </Provider>
         <ScrollRestoration />
         <Scripts />
       </body>
