@@ -1,45 +1,23 @@
 import React from 'react';
-import ComingSoonDemo from '../../components/ComingSoonDemo';
+import { useNavigate } from 'react-router';
+import { LessonContainer } from '../../components/lessons/LessonContainer';
+import { neuralNetworkLessons } from '../../components/lessons/neural-network/lesson-data';
 
 export default function NeuralNetworkDemo() {
+  const navigate = useNavigate();
+
+  const handleComplete = () => {
+    console.log('Neural network course completed!');
+    // Navigate back to demos page
+    navigate('/demos');
+  };
+
   return (
-    <ComingSoonDemo
-      title="Neural Network Visualization"
-      description="Explore how neural networks learn with this interactive visualization. Build, train, and visualize neural networks with different architectures and watch them learn in real-time."
-      difficulty="Intermediate"
-      concepts={['Neural Networks', 'Backpropagation', 'Activation Functions']}
-      features={[
-        {
-          title: 'Interactive Network Builder',
-          description:
-            'Design custom neural network architectures with drag-and-drop layers',
-        },
-        {
-          title: 'Real-time Training',
-          description:
-            'Watch weights and biases update as the network learns from your data',
-        },
-        {
-          title: 'Activation Visualizations',
-          description:
-            'See how different activation functions affect neuron outputs',
-        },
-        {
-          title: 'Loss Function Tracking',
-          description:
-            'Monitor training progress with live loss and accuracy graphs',
-        },
-        {
-          title: 'Weight Visualization',
-          description:
-            'Explore learned features through interactive weight matrices',
-        },
-        {
-          title: 'Dataset Selection',
-          description:
-            'Train on various datasets from simple XOR to complex image recognition',
-        },
-      ]}
+    <LessonContainer
+      lessons={neuralNetworkLessons}
+      title="Interactive Neural Network Course"
+      description="Dive deep into neural networks through hands-on visualizations. Learn how networks are structured, how data flows through them, and how they learn."
+      onComplete={handleComplete}
     />
   );
 }

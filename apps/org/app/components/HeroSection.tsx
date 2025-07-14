@@ -113,6 +113,27 @@ export function HeroSection() {
         >
           Try Linear Regression
         </Button>
+
+        <Button
+          component={Link}
+          to="/demos/neural-network"
+          variant="outlined"
+          size="large"
+          sx={{
+            px: 4,
+            py: 1.5,
+            fontSize: '1.1rem',
+            borderColor: 'secondary.main',
+            color: 'secondary.main',
+            backdropFilter: 'blur(5px)',
+            '&:hover': {
+              transform: 'translateY(-2px)',
+              boxShadow: theme.palette.glass.shadow.light,
+            },
+          }}
+        >
+          Try Neural Networks
+        </Button>
       </Stack>
     </Box>
   );

@@ -35,9 +35,13 @@ const getSystemPreference = (): ThemeMode => {
 // Helper function to get initial theme
 const getInitialTheme = (): ThemeMode => {
   if (typeof window !== 'undefined') {
-    const saved = localStorage.getItem('themeMode');
-    if (saved && (saved === 'light' || saved === 'dark')) {
-      return saved as ThemeMode;
+    try {
+      const saved = localStorage.getItem('themeMode');
+      if (saved && (saved === 'light' || saved === 'dark')) {
+        return saved as ThemeMode;
+      }
+    } catch (error) {
+      console.warn('Failed to read theme from localStorage:', error);
     }
     return getSystemPreference();
   }
@@ -47,7 +51,7 @@ const getInitialTheme = (): ThemeMode => {
 export const CustomThemeProvider: React.FC<ThemeProviderProps> = ({
   children,
 }) => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>(getInitialTheme);
+  const [themeMode, setThemeMode] = useState<ThemeMode>('light');
   const [isHydrated, setIsHydrated] = useState(false);
 
   const theme = themeMode === 'light' ? lightTheme : darkTheme;
@@ -56,36 +60,30 @@ export const CustomThemeProvider: React.FC<ThemeProviderProps> = ({
     setThemeMode((prevMode) => (prevMode === 'light' ? 'dark' : 'light'));
   };
 
-  // Handle hydration and system preference changes
+  // Load saved theme on mount
   useEffect(() => {
-    setIsHydrated(true);
-
-    // Re-check theme after hydration
-    const savedTheme = localStorage.getItem('themeMode');
-    if (!savedTheme) {
-      const systemPreference = getSystemPreference();
-      setThemeMode(systemPreference);
-    }
-
-    // Listen for system theme changes
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
-    const handleSystemThemeChange = (e: MediaQueryListEvent) => {
-      // Only update if user hasn't set a preference
-      const savedTheme = localStorage.getItem('themeMode');
-      if (!savedTheme) {
-        setThemeMode(e.matches ? 'dark' : 'light');
+    try {
+      const saved = localStorage.getItem('themeMode');
+      if (saved && (saved === 'light' || saved === 'dark')) {
+        setThemeMode(saved as ThemeMode);
+      } else {
+        setThemeMode(getSystemPreference());
       }
-    };
-
-    mediaQuery.addEventListener('change', handleSystemThemeChange);
-    return () =>
-      mediaQuery.removeEventListener('change', handleSystemThemeChange);
+    } catch (error) {
+      console.warn('Failed to read theme from localStorage:', error);
+      setThemeMode(getSystemPreference());
+    }
+    setIsHydrated(true);
   }, []);
 
   // Save theme preference to localStorage
   useEffect(() => {
     if (isHydrated && typeof window !== 'undefined') {
-      localStorage.setItem('themeMode', themeMode);
+      try {
+        localStorage.setItem('themeMode', themeMode);
+      } catch (error) {
+        console.warn('Failed to save theme to localStorage:', error);
+      }
     }
   }, [themeMode, isHydrated]);
 

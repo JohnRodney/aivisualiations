@@ -8,8 +8,8 @@ import {
   Button,
   Chip,
 } from '@mui/material';
+import { useTheme } from '@mui/material/styles';
 import { Link } from 'react-router';
-import { useTheme } from '../theme/ThemeContext';
 
 const demos = [
   {
@@ -60,7 +60,7 @@ const demos = [
 ];
 
 export default function Demos() {
-  const { themeMode } = useTheme();
+  const theme = useTheme();
 
   return (
     <Container maxWidth="lg">
@@ -72,13 +72,10 @@ export default function Demos() {
             mb: 6,
             p: { xs: 4, md: 6 },
             borderRadius: 4,
-            background:
-              themeMode === 'dark'
-                ? 'rgba(255, 255, 255, 0.05)'
-                : 'rgba(255, 255, 255, 0.25)',
+            background: theme.palette.glass.primary,
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
-            boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+            border: `1px solid ${theme.palette.glass.border}`,
+            boxShadow: theme.palette.glass.shadow.light,
           }}
         >
           <Typography
@@ -88,10 +85,7 @@ export default function Demos() {
             sx={{
               fontSize: { xs: '2.5rem', md: '3.5rem' },
               fontWeight: 'bold',
-              background:
-                themeMode === 'dark'
-                  ? 'linear-gradient(45deg, #90caf9, #f48fb1)'
-                  : 'linear-gradient(45deg, #1976d2, #dc004e)',
+              background: theme.palette.gradients.text,
               backgroundClip: 'text',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -153,17 +147,14 @@ export default function Demos() {
                 height: '100%',
                 display: 'flex',
                 flexDirection: 'column',
-                background:
-                  themeMode === 'dark'
-                    ? 'rgba(255, 255, 255, 0.05)'
-                    : 'rgba(255, 255, 255, 0.25)',
+                background: theme.palette.glass.card,
                 backdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: `1px solid ${theme.palette.glass.border}`,
                 borderRadius: 2,
                 transition: 'all 0.3s ease',
                 '&:hover': {
                   transform: 'translateY(-8px)',
-                  boxShadow: '0 12px 40px rgba(0, 0, 0, 0.2)',
+                  boxShadow: theme.palette.glass.shadow.heavy,
                 },
               }}
             >
@@ -217,7 +208,7 @@ export default function Demos() {
                       variant="outlined"
                       size="small"
                       sx={{
-                        background: 'rgba(255, 255, 255, 0.1)',
+                        background: theme.palette.glass.secondary,
                         backdropFilter: 'blur(5px)',
                       }}
                     />
@@ -235,16 +226,18 @@ export default function Demos() {
                   sx={{
                     m: 1,
                     background:
-                      demo.title === 'Linear Regression'
-                        ? 'linear-gradient(45deg, #1976d2, #1565c0)'
+                      demo.title === 'Linear Regression' ||
+                      demo.title === 'Neural Network'
+                        ? theme.palette.gradients.button
                         : undefined,
                     '&:hover': {
                       transform: 'translateY(-2px)',
-                      boxShadow: '0 4px 15px rgba(0, 0, 0, 0.3)',
+                      boxShadow: theme.palette.glass.shadow.light,
                     },
                   }}
                 >
-                  {demo.title === 'Linear Regression'
+                  {demo.title === 'Linear Regression' ||
+                  demo.title === 'Neural Network'
                     ? 'Try Demo'
                     : 'Coming Soon'}
                 </Button>
@@ -259,12 +252,9 @@ export default function Demos() {
             mt: 6,
             p: 4,
             borderRadius: 3,
-            background:
-              themeMode === 'dark'
-                ? 'rgba(255, 255, 255, 0.05)'
-                : 'rgba(255, 255, 255, 0.25)',
+            background: theme.palette.glass.primary,
             backdropFilter: 'blur(10px)',
-            border: '1px solid rgba(255, 255, 255, 0.2)',
+            border: `1px solid ${theme.palette.glass.border}`,
             textAlign: 'center',
           }}
         >
@@ -286,8 +276,8 @@ export default function Demos() {
             sx={{ lineHeight: 1.6 }}
           >
             We're working hard to bring you more interactive machine learning
-            demonstrations. Start with our Linear Regression demo and check back
-            soon for new additions!
+            demonstrations. Start with our Linear Regression or Neural Network
+            demos and check back soon for new additions!
           </Typography>
         </Box>
       </Box>
