@@ -227,7 +227,8 @@ export default function Demos() {
                     m: 1,
                     background:
                       demo.title === 'Linear Regression' ||
-                      demo.title === 'Neural Network'
+                      demo.title === 'Neural Network' ||
+                      demo.title === 'Classification'
                         ? theme.palette.gradients.button
                         : undefined,
                     '&:hover': {
@@ -237,7 +238,8 @@ export default function Demos() {
                   }}
                 >
                   {demo.title === 'Linear Regression' ||
-                  demo.title === 'Neural Network'
+                  demo.title === 'Neural Network' ||
+                  demo.title === 'Classification'
                     ? 'Try Demo'
                     : 'Coming Soon'}
                 </Button>
