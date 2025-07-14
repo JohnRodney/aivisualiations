@@ -1,6 +1,11 @@
-// Algorithm Module Exports
-// Main entry point for all algorithm-related functionality
+// Classification Algorithms Index
+// Re-exports all algorithm functions for easy importing
 
-export * from './logistic-regression';
-export * from './svm';
-export * from './decision-tree';
+export { trainDecisionTree, predictDecisionTree } from './decision-tree';
+
+export { trainSVM, predictSVM } from './svm';
+
+export {
+  trainLogisticRegression,
+  predictLogistic,
+} from './logistic-regression';

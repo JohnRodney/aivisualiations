@@ -42,17 +42,6 @@ export const activationFunctions = {
   linear: (x: number) => x,
 };
 
-// Derivatives for backpropagation
-export const activationDerivatives = {
-  relu: (x: number) => (x > 0 ? 1 : 0),
-  sigmoid: (x: number) => {
-    const sig = activationFunctions.sigmoid(x);
-    return sig * (1 - sig);
-  },
-  tanh: (x: number) => 1 - Math.pow(Math.tanh(x), 2),
-  linear: (x: number) => 1,
-};
-
 // Create a simple network architecture
 export function createNetwork(
   inputSize: number,
@@ -178,60 +167,6 @@ export function forwardPass(
 }
 
 // Calculate loss (mean squared error)
-export function calculateLoss(
-  predictions: number[],
-  targets: number[]
-): number {
-  const loss = predictions.reduce((sum, pred, index) => {
-    const error = pred - targets[index];
-    return sum + error * error;
-  }, 0);
-  return loss / predictions.length;
-}
-
-// Generate sample training data
-export function generateTrainingData(
-  type: 'xor' | 'classification' | 'regression',
-  samples = 100
-): { inputs: number[][]; targets: number[][] } {
-  const inputs: number[][] = [];
-  const targets: number[][] = [];
-
-  switch (type) {
-    case 'xor':
-      for (let i = 0; i < samples; i++) {
-        const x1 = Math.random() > 0.5 ? 1 : 0;
-        const x2 = Math.random() > 0.5 ? 1 : 0;
-        const output = x1 ^ x2; // XOR operation
-        inputs.push([x1, x2]);
-        targets.push([output]);
-      }
-      break;
-
-    case 'classification':
-      for (let i = 0; i < samples; i++) {
-        const x1 = Math.random() * 2 - 1; // -1 to 1
-        const x2 = Math.random() * 2 - 1; // -1 to 1
-        const output = x1 + x2 > 0 ? 1 : 0; // Simple linear classification
-        inputs.push([x1, x2]);
-        targets.push([output]);
-      }
-      break;
-
-    case 'regression':
-      for (let i = 0; i < samples; i++) {
-        const x1 = Math.random() * 2 - 1;
-        const x2 = Math.random() * 2 - 1;
-        const output = x1 * x1 + x2 * x2; // Quadratic function
-        inputs.push([x1, x2]);
-        targets.push([output]);
-      }
-      break;
-  }
-
-  return { inputs, targets };
-}
-
 // Canvas drawing utilities
 export function drawNeuron(
   ctx: CanvasRenderingContext2D,

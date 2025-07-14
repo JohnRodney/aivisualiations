@@ -116,19 +116,3 @@ export const ALGORITHM_CONFIGS = {
     icon: '🌳',
   },
 } as const;
-
-// Helper functions for dataset/algorithm compatibility
-export function getDatasetOptionsForAlgorithm(
-  algorithmId: keyof typeof ALGORITHM_CONFIGS
-) {
-  return Object.values(DATASET_CONFIGS).filter((dataset) =>
-    dataset.suitable_algorithms.includes(algorithmId as any)
-  );
-}
-
-export function getAlgorithmOptionsForDataset(
-  datasetId: keyof typeof DATASET_CONFIGS
-) {
-  const dataset = DATASET_CONFIGS[datasetId];
-  return dataset.suitable_algorithms.map((algId) => ALGORITHM_CONFIGS[algId]);
-}

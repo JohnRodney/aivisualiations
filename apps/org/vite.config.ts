@@ -1,6 +1,7 @@
 /// <reference types='vitest' />
 import { defineConfig } from 'vite';
 import { reactRouter } from '@react-router/dev/vite';
+import unusedCode from 'vite-plugin-unused-code';
 
 export default defineConfig(() => ({
   root: __dirname,
@@ -13,7 +14,17 @@ export default defineConfig(() => ({
     port: 4300,
     host: 'localhost',
   },
-  plugins: [!process.env.VITEST && reactRouter()],
+  plugins: [
+    !process.env.VITEST && reactRouter(),
+    unusedCode({
+      patterns: ['app/**/*.*'],
+      exclude: ['**/*.spec.*', '**/*.test.*', '**/test*'],
+      detectUnusedFiles: true,
+      detectUnusedExport: true,
+      log: 'unused',
+      exportJSON: true,
+    }),
+  ],
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],

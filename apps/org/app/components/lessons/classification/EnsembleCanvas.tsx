@@ -19,6 +19,7 @@ import {
   generateClassificationDataset,
   trainDecisionTree,
   calculateMetrics,
+  DATASET_CONFIGS,
 } from './index';
 import {
   ClassificationPoint,
@@ -41,6 +42,7 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
   const [dataset, setDataset] = useState<ClassificationDataset>(
     () => generateClassificationDataset('moons', 60, 600, 400) // Pass canvas dimensions
   );
+  const [datasetType, setDatasetType] = useState<string>('moons'); // Track dataset type separately
   const [trees, setTrees] = useState<DecisionTreeNode[]>([]);
   const [isTraining, setIsTraining] = useState(false);
   const [currentTree, setCurrentTree] = useState(0);
@@ -50,6 +52,7 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
   const generateNewDataset = (type: any) => {
     const newDataset = generateClassificationDataset(type, 60, 600, 400); // Pass canvas dimensions
     setDataset(newDataset);
+    setDatasetType(type); // Update dataset type state
     setTrees([]);
     setCurrentTree(0);
     setIsTraining(false);
@@ -93,7 +96,7 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
       forestSize,
       accuracy: metrics.accuracy,
       individualTreeAccuracy: calculateIndividualTreeAccuracy(trainedTrees),
-      dataset: dataset.name,
+      dataset: datasetType,
     });
   };
 
@@ -107,7 +110,8 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
     let votes = 0;
     forest.forEach((tree) => {
       const value = tree.feature === 0 ? x : y;
-      const prediction = value <= tree.threshold ? 0 : 1;
+      const prediction =
+        tree.threshold !== undefined && value <= tree.threshold ? 0 : 1;
       votes += prediction;
     });
 
@@ -123,7 +127,8 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
     forest.forEach((tree) => {
       const predictions = dataset.points.map((point) => {
         const value = tree.feature === 0 ? point.x : point.y;
-        const prediction = value <= tree.threshold ? 0 : 1;
+        const prediction =
+          tree.threshold !== undefined && value <= tree.threshold ? 0 : 1;
         return { ...point, predicted: prediction } as ClassificationPoint;
       });
       const metrics = calculateMetrics(predictions);
@@ -153,16 +158,18 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
           ctx.strokeStyle = `hsl(${hue}, 70%, 50%)`;
           ctx.lineWidth = 2;
 
-          if (tree.feature === 0) {
-            ctx.beginPath();
-            ctx.moveTo(tree.threshold, 0);
-            ctx.lineTo(tree.threshold, canvas.height);
-            ctx.stroke();
-          } else {
-            ctx.beginPath();
-            ctx.moveTo(0, tree.threshold);
-            ctx.lineTo(canvas.width, tree.threshold);
-            ctx.stroke();
+          if (tree.threshold !== undefined) {
+            if (tree.feature === 0) {
+              ctx.beginPath();
+              ctx.moveTo(tree.threshold, 0);
+              ctx.lineTo(tree.threshold, canvas.height);
+              ctx.stroke();
+            } else {
+              ctx.beginPath();
+              ctx.moveTo(0, tree.threshold);
+              ctx.lineTo(canvas.width, tree.threshold);
+              ctx.stroke();
+            }
           }
         });
         ctx.globalAlpha = 1.0;
@@ -177,15 +184,17 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
             const index = (y * canvas.width + x) * 4;
 
             if (prediction === 1) {
-              data[index] = 100; // Red
-              data[index + 1] = 200; // Green
-              data[index + 2] = 100; // Blue
+              // Green class - use success theme color
+              data[index] = 76; // Red component of success green
+              data[index + 1] = 175; // Green component
+              data[index + 2] = 80; // Blue component
             } else {
-              data[index] = 200; // Red
-              data[index + 1] = 100; // Green
-              data[index + 2] = 100; // Blue
+              // Red class - use error theme color
+              data[index] = 244; // Red component of error red
+              data[index + 1] = 67; // Green component
+              data[index + 2] = 54; // Blue component
             }
-            data[index + 3] = 40; // Alpha
+            data[index + 3] = 80; // Alpha - visible but not overwhelming
           }
         }
 
@@ -219,16 +228,17 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
         <FormControl size="small" sx={{ minWidth: 120 }}>
           <InputLabel>Dataset</InputLabel>
           <Select
-            value={dataset.name.toLowerCase().replace(/\s+/g, '_')}
+            value={datasetType}
             onChange={(e) => generateNewDataset(e.target.value)}
             MenuProps={{
               disableScrollLock: true,
             }}
           >
-            <MenuItem value="linearly_separable">Linear</MenuItem>
-            <MenuItem value="circles">Circles</MenuItem>
-            <MenuItem value="moons">Moons</MenuItem>
-            <MenuItem value="blobs">Blobs</MenuItem>
+            {Object.values(DATASET_CONFIGS).map((config) => (
+              <MenuItem key={config.id} value={config.id}>
+                {config.icon} {config.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
 

@@ -75,7 +75,7 @@ export function HeroSection() {
       >
         <Button
           component={Link}
-          to="/demos"
+          to="/ml-demos"
           variant="contained"
           size="large"
           sx={{

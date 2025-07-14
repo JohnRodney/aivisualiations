@@ -18,6 +18,7 @@ import {
   generateClassificationDataset,
   trainDecisionTree,
   calculateMetrics,
+  DATASET_CONFIGS,
 } from './index';
 import {
   ClassificationPoint,
@@ -71,7 +72,7 @@ export function DecisionTreeCanvas({ onInteraction }: DecisionTreeCanvasProps) {
 
     onInteraction?.({
       splitFeature: decisionTree.feature === 0 ? 'X' : 'Y',
-      threshold: decisionTree.threshold.toFixed(1),
+      threshold: decisionTree.threshold?.toFixed(1) || 'N/A',
       metrics,
       dataset: dataset.name,
     });
@@ -84,7 +85,7 @@ export function DecisionTreeCanvas({ onInteraction }: DecisionTreeCanvasProps) {
   ): 0 | 1 => {
     const value = node.feature === 0 ? x : y;
 
-    if (value <= node.threshold) {
+    if (node.threshold !== undefined && value <= node.threshold) {
       return node.left?.prediction ?? 0;
     } else {
       return node.right?.prediction ?? 1;
@@ -106,64 +107,70 @@ export function DecisionTreeCanvas({ onInteraction }: DecisionTreeCanvasProps) {
       ctx.strokeStyle = theme.palette.primary.main;
       ctx.lineWidth = 3;
 
-      if (tree.feature === 0) {
-        // Vertical split
-        ctx.beginPath();
-        ctx.moveTo(tree.threshold, 0);
-        ctx.lineTo(tree.threshold, canvas.height);
-        ctx.stroke();
+      if (tree.threshold !== undefined) {
+        if (tree.feature === 0) {
+          // Vertical split
+          ctx.beginPath();
+          ctx.moveTo(tree.threshold, 0);
+          ctx.lineTo(tree.threshold, canvas.height);
+          ctx.stroke();
 
-        // Draw feature label
-        ctx.fillStyle = theme.palette.primary.main;
-        ctx.font = '14px Arial';
-        ctx.fillText(
-          `X ≤ ${tree.threshold.toFixed(0)}`,
-          tree.threshold + 5,
-          20
-        );
-      } else {
-        // Horizontal split
-        ctx.beginPath();
-        ctx.moveTo(0, tree.threshold);
-        ctx.lineTo(canvas.width, tree.threshold);
-        ctx.stroke();
+          // Draw feature label
+          ctx.fillStyle = theme.palette.primary.main;
+          ctx.font = '14px Arial';
+          ctx.fillText(
+            `X ≤ ${tree.threshold.toFixed(0)}`,
+            tree.threshold + 5,
+            20
+          );
+        } else {
+          // Horizontal split
+          ctx.beginPath();
+          ctx.moveTo(0, tree.threshold);
+          ctx.lineTo(canvas.width, tree.threshold);
+          ctx.stroke();
 
-        // Draw feature label
-        ctx.fillStyle = theme.palette.primary.main;
-        ctx.font = '14px Arial';
-        ctx.fillText(`Y ≤ ${tree.threshold.toFixed(0)}`, 5, tree.threshold - 5);
+          // Draw feature label
+          ctx.fillStyle = theme.palette.primary.main;
+          ctx.font = '14px Arial';
+          ctx.fillText(
+            `Y ≤ ${tree.threshold.toFixed(0)}`,
+            5,
+            tree.threshold - 5
+          );
+        }
+
+        // Draw regions
+        ctx.globalAlpha = 0.2;
+        if (tree.feature === 0) {
+          // Left region (class 0)
+          ctx.fillStyle = theme.palette.error.main;
+          ctx.fillRect(0, 0, tree.threshold, canvas.height);
+
+          // Right region (class 1)
+          ctx.fillStyle = theme.palette.success.main;
+          ctx.fillRect(
+            tree.threshold,
+            0,
+            canvas.width - tree.threshold,
+            canvas.height
+          );
+        } else {
+          // Bottom region (class 0)
+          ctx.fillStyle = theme.palette.error.main;
+          ctx.fillRect(
+            0,
+            tree.threshold,
+            canvas.width,
+            canvas.height - tree.threshold
+          );
+
+          // Top region (class 1)
+          ctx.fillStyle = theme.palette.success.main;
+          ctx.fillRect(0, 0, canvas.width, tree.threshold);
+        }
+        ctx.globalAlpha = 1.0;
       }
-
-      // Draw regions
-      ctx.globalAlpha = 0.2;
-      if (tree.feature === 0) {
-        // Left region (class 0)
-        ctx.fillStyle = theme.palette.error.main;
-        ctx.fillRect(0, 0, tree.threshold, canvas.height);
-
-        // Right region (class 1)
-        ctx.fillStyle = theme.palette.success.main;
-        ctx.fillRect(
-          tree.threshold,
-          0,
-          canvas.width - tree.threshold,
-          canvas.height
-        );
-      } else {
-        // Bottom region (class 0)
-        ctx.fillStyle = theme.palette.error.main;
-        ctx.fillRect(
-          0,
-          tree.threshold,
-          canvas.width,
-          canvas.height - tree.threshold
-        );
-
-        // Top region (class 1)
-        ctx.fillStyle = theme.palette.success.main;
-        ctx.fillRect(0, 0, canvas.width, tree.threshold);
-      }
-      ctx.globalAlpha = 1.0;
     }
 
     // Draw data points
@@ -232,10 +239,11 @@ export function DecisionTreeCanvas({ onInteraction }: DecisionTreeCanvasProps) {
               disableScrollLock: true,
             }}
           >
-            <MenuItem value="linearly_separable">Linear</MenuItem>
-            <MenuItem value="circles">Circles</MenuItem>
-            <MenuItem value="moons">Moons</MenuItem>
-            <MenuItem value="blobs">Blobs</MenuItem>
+            {Object.values(DATASET_CONFIGS).map((config) => (
+              <MenuItem key={config.id} value={config.id}>
+                {config.icon} {config.label}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
       </Stack>

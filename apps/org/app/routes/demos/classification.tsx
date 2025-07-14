@@ -9,7 +9,7 @@ export default function ClassificationDemo() {
   const handleComplete = () => {
     console.log('Classification course completed!');
     // Navigate back to demos page
-    navigate('/demos');
+    navigate('/ml-demos');
   };
 
   return (

@@ -9,7 +9,7 @@ export default function NeuralNetworkDemo() {
   const handleComplete = () => {
     console.log('Neural network course completed!');
     // Navigate back to demos page
-    navigate('/demos');
+    navigate('/ml-demos');
   };
 
   return (

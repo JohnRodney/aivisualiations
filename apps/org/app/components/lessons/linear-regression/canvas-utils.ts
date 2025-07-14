@@ -92,26 +92,6 @@ export const calculateBestFitLine = (points: Point[]): LineSegment => {
   };
 };
 
-export const calculateR2 = (points: Point[], line: LineSegment): number => {
-  const slope = (line.end.y - line.start.y) / (line.end.x - line.start.x);
-  const intercept = line.start.y - slope * line.start.x;
-
-  const predictions = points.map((p) => slope * p.x + intercept);
-  const actual = points.map((p) => p.y);
-  const mean = actual.reduce((sum, val) => sum + val, 0) / actual.length;
-
-  const totalSumSquares = actual.reduce(
-    (sum, val) => sum + Math.pow(val - mean, 2),
-    0
-  );
-  const residualSumSquares = actual.reduce(
-    (sum, val, i) => sum + Math.pow(val - predictions[i], 2),
-    0
-  );
-
-  return Math.max(0, 1 - residualSumSquares / totalSumSquares);
-};
-
 export const clearCanvas = (
   ctx: CanvasRenderingContext2D,
   canvas: HTMLCanvasElement

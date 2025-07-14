@@ -9,7 +9,7 @@ export default function LinearRegression() {
   const handleComplete = () => {
     console.log('Linear regression course completed!');
     // Navigate back to demos page
-    navigate('/demos');
+    navigate('/ml-demos');
   };
 
   return (
