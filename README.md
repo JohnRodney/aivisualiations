@@ -1,105 +1,111 @@
-# ML Visuals
+# 🧠 Interactive ML Demos
+
+> **Learn Machine Learning Through Beautiful, Interactive Visualizations**
+
+Transform complex machine learning concepts into intuitive visual experiences. No coding required - just point, click, and discover the magic behind the algorithms!
+
 <img width="1901" height="947" alt="image" src="https://github.com/user-attachments/assets/afe9a9da-ee1c-4b2c-85a8-f615062d4ce2" />
 
 <img width="1873" height="895" alt="image" src="https://github.com/user-attachments/assets/e4092138-edf2-46c2-ba66-e4d9ca592b95" />
 
+## ✨ What Makes This Special
 
-<a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
+🎯 **Interactive Learning** - Watch algorithms adapt in real-time as you add data points  
+🎨 **Beautiful Visualizations** - Glass morphism design with smooth animations  
+🧩 **No Code Required** - Perfect for students, educators, and curious minds  
+📱 **Responsive Design** - Works seamlessly on desktop and mobile  
+🌓 **Dark/Light Themes** - Choose your preferred learning environment
 
-✨ Your new, shiny [Nx workspace](https://nx.dev) is ready ✨.
+## 🚀 Available Demos
 
-[Learn more about this workspace setup and its capabilities](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects) or run `npx nx graph` to visually explore what was created. Now, let's get you up to speed!
+### 📈 **Linear Regression**
 
-## Run tasks
+- Interactive scatter plots with real-time line fitting
+- Explore slope, intercept, and R² values
+- Challenge yourself with different data patterns
 
-To run the dev server for your app, use:
+### 🧠 **Neural Networks**
 
-```sh
+- Visualize forward pass and backpropagation
+- Watch weights update during training
+- Understand network architecture through animation
+
+### 🎯 **Classification**
+
+- Decision boundaries with multiple algorithms
+- Support Vector Machines with different kernels
+- Ensemble methods and voting classifiers
+
+### 🎪 **Clustering** _(New!)_
+
+- K-means clustering with draggable centroids
+- Multiple dataset types (blobs, circles, uniform)
+- Real-time convergence visualization
+
+## 🏃‍♂️ Quick Start
+
+### Prerequisites
+
+- Node.js 18+
+- npm or yarn
+
+### Launch the Demo
+
+```bash
+# Install dependencies
+npm install
+
+# Start the development server
 npx nx serve org
+
+# Open your browser to http://localhost:4201
 ```
 
-To create a production bundle:
+### Build for Production
 
-```sh
+```bash
 npx nx build org
 ```
 
-To see all available targets to run for a project, run:
+## 🎓 Educational Features
 
-```sh
-npx nx show project org
-```
+- **Progressive Learning**: Start with basics, advance to complex topics
+- **Key Takeaways**: Important concepts highlighted after each lesson
+- **Hands-on Interaction**: Learn by doing, not just reading
+- **Real-time Feedback**: See immediate results of parameter changes
+- **Completion Tracking**: Progress through structured lesson plans
 
-These targets are either [inferred automatically](https://nx.dev/concepts/inferred-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) or defined in the `project.json` or `package.json` files.
+## 🛠️ Tech Stack
 
-[More about running tasks in the docs &raquo;](https://nx.dev/features/run-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+- **React 18** - Modern component architecture
+- **TypeScript** - Type-safe development
+- **Material-UI** - Beautiful, accessible components
+- **HTML5 Canvas** - High-performance visualizations
+- **React Router 7** - Smooth navigation
+- **NX** - Powerful monorepo tooling
 
-## Add new projects
+## 🎨 Design Philosophy
 
-While you could add new projects to your workspace manually, you might want to leverage [Nx plugins](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) and their [code generation](https://nx.dev/features/generate-code?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) feature.
+We believe machine learning should be **accessible**, **visual**, and **fun**. Every interaction is designed to build intuition and understanding through exploration and play.
 
-Use the plugin's generator to create new projects.
+## 📖 Learn More
 
-To generate a new application, use:
+Each demo includes:
 
-```sh
-npx nx g @nx/react:app demo
-```
+- **Guided lessons** with clear objectives
+- **Interactive canvas** for hands-on learning
+- **Parameter controls** to experiment with algorithms
+- **Real-time metrics** to understand performance
+- **Educational explanations** of key concepts
 
-To generate a new library, use:
+## 🤝 Contributing
 
-```sh
-npx nx g @nx/react:lib mylib
-```
+We'd love your help making ML education even better! Whether it's new algorithms, improved visualizations, or educational content - all contributions are welcome.
 
-You can use `npx nx list` to get a list of installed plugins. Then, run `npx nx list <plugin-name>` to learn about more specific capabilities of a particular plugin. Alternatively, [install Nx Console](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) to browse plugins and generators in your IDE.
+## 📄 License
 
-[Learn more about Nx plugins &raquo;](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) | [Browse the plugin registry &raquo;](https://nx.dev/plugin-registry?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+MIT License - feel free to use this for educational purposes!
 
-## Set up CI!
+---
 
-### Step 1
-
-To connect to Nx Cloud, run the following command:
-
-```sh
-npx nx connect
-```
-
-Connecting to Nx Cloud ensures a [fast and scalable CI](https://nx.dev/ci/intro/why-nx-cloud?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects) pipeline. It includes features such as:
-
-- [Remote caching](https://nx.dev/ci/features/remote-cache?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task distribution across multiple machines](https://nx.dev/ci/features/distribute-task-execution?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Automated e2e test splitting](https://nx.dev/ci/features/split-e2e-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Task flakiness detection and rerunning](https://nx.dev/ci/features/flaky-tasks?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-### Step 2
-
-Use the following command to configure a CI workflow for your workspace:
-
-```sh
-npx nx g ci-workflow
-```
-
-[Learn more about Nx on CI](https://nx.dev/ci/intro/ci-with-nx#ready-get-started-with-your-provider?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Install Nx Console
-
-Nx Console is an editor extension that enriches your developer experience. It lets you run tasks, generate code, and improves code autocompletion in your IDE. It is available for VSCode and IntelliJ.
-
-[Install Nx Console &raquo;](https://nx.dev/getting-started/editor-setup?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-## Useful links
-
-Learn more:
-
-- [Learn more about this workspace setup](https://nx.dev/getting-started/tutorials/react-monorepo-tutorial?utm_source=nx_project&amp;utm_medium=readme&amp;utm_campaign=nx_projects)
-- [Learn about Nx on CI](https://nx.dev/ci/intro/ci-with-nx?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [Releasing Packages with Nx release](https://nx.dev/features/manage-releases?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-- [What are Nx plugins?](https://nx.dev/concepts/nx-plugins?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
-
-And join the Nx community:
-- [Discord](https://go.nx.dev/community)
-- [Follow us on X](https://twitter.com/nxdevtools) or [LinkedIn](https://www.linkedin.com/company/nrwl)
-- [Our Youtube channel](https://www.youtube.com/@nxdevtools)
-- [Our blog](https://nx.dev/blog?utm_source=nx_project&utm_medium=readme&utm_campaign=nx_projects)
+**Happy Learning!** 🎉 Transform your understanding of machine learning through the power of interactive visualization.
