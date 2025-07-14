@@ -1,4 +1,8 @@
-# Org
+# ML Visuals
+<img width="1901" height="947" alt="image" src="https://github.com/user-attachments/assets/afe9a9da-ee1c-4b2c-85a8-f615062d4ce2" />
+
+<img width="1873" height="895" alt="image" src="https://github.com/user-attachments/assets/e4092138-edf2-46c2-ba66-e4d9ca592b95" />
+
 
 <a alt="Nx logo" href="https://nx.dev" target="_blank" rel="noreferrer"><img src="https://raw.githubusercontent.com/nrwl/nx/master/images/nx-logo.png" width="45"></a>
 
