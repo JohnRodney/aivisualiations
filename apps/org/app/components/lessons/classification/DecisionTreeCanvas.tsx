@@ -37,8 +37,8 @@ interface DecisionTreeCanvasProps {
 export function DecisionTreeCanvas({ onInteraction }: DecisionTreeCanvasProps) {
   const theme = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [dataset, setDataset] = useState<ClassificationDataset>(() =>
-    generateClassificationDataset('linearly_separable', 40)
+  const [dataset, setDataset] = useState<ClassificationDataset>(
+    () => generateClassificationDataset('linearly_separable', 40, 600, 400) // Pass canvas dimensions
   );
   const [tree, setTree] = useState<DecisionTreeNode | null>(null);
   const [trained, setTrained] = useState(false);
@@ -46,10 +46,10 @@ export function DecisionTreeCanvas({ onInteraction }: DecisionTreeCanvasProps) {
   const [showSteps, setShowSteps] = useState(false);
 
   const generateNewDataset = (type: any) => {
-    const newDataset = generateClassificationDataset(type, 40);
+    const newDataset = generateClassificationDataset(type, 40, 600, 400); // Pass canvas dimensions
     setDataset(newDataset);
-    setTrained(false);
     setTree(null);
+    setTrained(false);
     setCurrentStep(0);
     setShowSteps(false);
   };

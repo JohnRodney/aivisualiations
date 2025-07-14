@@ -38,8 +38,8 @@ interface EnsembleCanvasProps {
 export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
   const theme = useTheme();
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const [dataset, setDataset] = useState<ClassificationDataset>(() =>
-    generateClassificationDataset('moons', 60)
+  const [dataset, setDataset] = useState<ClassificationDataset>(
+    () => generateClassificationDataset('moons', 60, 600, 400) // Pass canvas dimensions
   );
   const [trees, setTrees] = useState<DecisionTreeNode[]>([]);
   const [isTraining, setIsTraining] = useState(false);
@@ -48,7 +48,7 @@ export function EnsembleCanvas({ onInteraction }: EnsembleCanvasProps) {
   const [showIndividualTrees, setShowIndividualTrees] = useState(false);
 
   const generateNewDataset = (type: any) => {
-    const newDataset = generateClassificationDataset(type, 60);
+    const newDataset = generateClassificationDataset(type, 60, 600, 400); // Pass canvas dimensions
     setDataset(newDataset);
     setTrees([]);
     setCurrentTree(0);
