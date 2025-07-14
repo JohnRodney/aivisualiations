@@ -27,6 +27,9 @@ export function AppNav() {
           ML Interactive Demos
         </Typography>
         <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+          <Button color="inherit" component={NavLink} to="/" end>
+            Home
+          </Button>
           <Button color="inherit" component={NavLink} to="/ml-demos" end>
             ML Demos
           </Button>
