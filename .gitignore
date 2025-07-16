@@ -53,3 +53,6 @@ manim-visuals/media/
 manim-visuals/__pycache__/
 manim-visuals/*.log
 manim-visuals/test_scene.py
+venv/
+.venv/
+media/
