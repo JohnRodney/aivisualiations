@@ -9,8 +9,10 @@ import {
   LinearProgress,
   Alert,
   Chip,
+  Divider,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { ManimalVideo } from '../ManimalVideo';
 
 interface Point {
   x: number;
@@ -51,6 +53,26 @@ export function SlopeInterceptCanvas({
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
+    // Define mathematical coordinate system
+    const mathBounds = {
+      xMin: -50,
+      xMax: 550,
+      yMin: 0,
+      yMax: 300,
+    };
+
+    // Convert mathematical coordinates to canvas pixel coordinates
+    const mathToCanvas = (mathX: number, mathY: number) => {
+      const canvasX =
+        ((mathX - mathBounds.xMin) / (mathBounds.xMax - mathBounds.xMin)) *
+        canvas.width;
+      const canvasY =
+        canvas.height -
+        ((mathY - mathBounds.yMin) / (mathBounds.yMax - mathBounds.yMin)) *
+          canvas.height;
+      return { x: canvasX, y: canvasY };
+    };
+
     // Draw grid
     ctx.strokeStyle = theme.palette.mode === 'dark' ? '#333333' : '#eeeeee';
     ctx.lineWidth = 1;
@@ -70,12 +92,16 @@ export function SlopeInterceptCanvas({
     // Draw axes
     ctx.strokeStyle = theme.palette.mode === 'dark' ? '#666666' : '#999999';
     ctx.lineWidth = 2;
-    // Y-axis
+
+    // Y-axis (at x = 0 in mathematical coordinates)
+    const yAxisCanvas = mathToCanvas(0, mathBounds.yMin);
+    const yAxisTop = mathToCanvas(0, mathBounds.yMax);
     ctx.beginPath();
-    ctx.moveTo(40, 0);
-    ctx.lineTo(40, canvas.height);
+    ctx.moveTo(yAxisCanvas.x, yAxisCanvas.y);
+    ctx.lineTo(yAxisTop.x, yAxisTop.y);
     ctx.stroke();
-    // X-axis
+
+    // X-axis (at y = 0 in mathematical coordinates, but we'll use bottom of canvas)
     ctx.beginPath();
     ctx.moveTo(0, canvas.height - 40);
     ctx.lineTo(canvas.width, canvas.height - 40);
@@ -84,36 +110,46 @@ export function SlopeInterceptCanvas({
     // Draw data points
     ctx.fillStyle = theme.palette.secondary.main;
     dataPoints.forEach((point) => {
+      const canvasPos = mathToCanvas(point.x, point.y);
       ctx.beginPath();
-      ctx.arc(point.x, point.y, 6, 0, 2 * Math.PI);
+      ctx.arc(canvasPos.x, canvasPos.y, 6, 0, 2 * Math.PI);
       ctx.fill();
     });
 
-    // Draw regression line
+    // Draw regression line with mathematically correct slope
     ctx.strokeStyle = theme.palette.primary.main;
     ctx.lineWidth = 3;
     ctx.beginPath();
 
-    // Calculate line endpoints
-    const x1 = 0;
-    const y1 = intercept;
-    const x2 = canvas.width;
-    const y2 = slope * x2 + intercept;
+    // Calculate line endpoints in mathematical coordinates
+    const x1Math = mathBounds.xMin;
+    const x2Math = mathBounds.xMax;
+    const y1Math = slope * x1Math + intercept;
+    const y2Math = slope * x2Math + intercept;
 
-    ctx.moveTo(x1, y1);
-    ctx.lineTo(x2, y2);
+    // Convert to canvas coordinates
+    const point1 = mathToCanvas(x1Math, y1Math);
+    const point2 = mathToCanvas(x2Math, y2Math);
+
+    ctx.moveTo(point1.x, point1.y);
+    ctx.lineTo(point2.x, point2.y);
     ctx.stroke();
 
-    // Highlight y-intercept
+    // Highlight y-intercept (where x = 0)
+    const yInterceptCanvas = mathToCanvas(0, intercept);
     ctx.fillStyle = theme.palette.error.main;
     ctx.beginPath();
-    ctx.arc(40, intercept, 8, 0, 2 * Math.PI);
+    ctx.arc(yInterceptCanvas.x, yInterceptCanvas.y, 8, 0, 2 * Math.PI);
     ctx.fill();
 
     // Draw y-intercept label
     ctx.fillStyle = theme.palette.mode === 'dark' ? '#ffffff' : '#000000';
     ctx.font = '14px Arial';
-    ctx.fillText(`y-intercept: ${intercept.toFixed(1)}`, 50, intercept - 10);
+    ctx.fillText(
+      `y-intercept: ${intercept.toFixed(1)}`,
+      yInterceptCanvas.x + 10,
+      yInterceptCanvas.y - 10
+    );
   };
 
   const calculateR2 = () => {
@@ -208,11 +244,46 @@ export function SlopeInterceptCanvas({
 
   return (
     <Box>
+      {/* Video Introduction */}
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="h6"
+          gutterBottom
+          color="primary"
+          sx={{ textAlign: 'center' }}
+        >
+          🎬 Understanding Slope & Y-Intercept
+        </Typography>
+        <ManimalVideo
+          topic="linear_regression"
+          sceneName="SlopeInterceptSimple"
+          title="Slope & Intercept Magic"
+          description="Learn how slope (m) and y-intercept (b) control the line in y = mx + b"
+          onVideoEnd={() =>
+            onInteraction?.({
+              action: 'video_completed',
+              video: 'SlopeInterceptSimple',
+              timestamp: new Date().toISOString(),
+            })
+          }
+          onVideoStart={() =>
+            onInteraction?.({
+              action: 'video_started',
+              video: 'SlopeInterceptSimple',
+            })
+          }
+          showControls={true}
+        />
+      </Box>
+
+      <Divider sx={{ mb: 3 }} />
+
       <Typography
         variant="h6"
         sx={{ mb: 3, color: 'text.primary', textAlign: 'center' }}
       >
-        Adjust the slope and y-intercept to see how they affect the line
+        Now Practice! Adjust the slope and y-intercept to see how they affect
+        the line
       </Typography>
 
       <Grid container spacing={3} sx={{ alignItems: 'flex-start' }}>

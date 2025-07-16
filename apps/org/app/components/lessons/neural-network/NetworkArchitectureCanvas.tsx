@@ -9,9 +9,11 @@ import {
   Card,
   CardContent,
   Chip,
+  Divider,
 } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { createNetwork, drawNetwork, NetworkArchitecture } from './nn-utils';
+import { ManimalVideo } from '../ManimalVideo';
 
 interface NetworkArchitectureCanvasProps {
   onInteraction?: (data: any) => void;
@@ -102,11 +104,45 @@ export function NetworkArchitectureCanvas({
 
   return (
     <Box>
+      {/* Video Introduction */}
+      <Box sx={{ mb: 4 }}>
+        <Typography
+          variant="h6"
+          gutterBottom
+          color="primary"
+          sx={{ textAlign: 'center' }}
+        >
+          🎬 Neural Network Architecture Introduction
+        </Typography>
+        <ManimalVideo
+          topic="neural_network"
+          sceneName="NetworkArchitectureIntro"
+          title="Neural Network Architecture"
+          description="Discover how neural networks are structured and learn the building blocks of AI"
+          onVideoEnd={() =>
+            onInteraction?.({
+              action: 'video_completed',
+              video: 'NetworkArchitectureIntro',
+              timestamp: new Date().toISOString(),
+            })
+          }
+          onVideoStart={() =>
+            onInteraction?.({
+              action: 'video_started',
+              video: 'NetworkArchitectureIntro',
+            })
+          }
+          showControls={true}
+        />
+      </Box>
+
+      <Divider sx={{ mb: 3 }} />
+
       <Typography
         variant="h6"
-        sx={{ mb: 2, color: 'text.primary', textAlign: 'center' }}
+        sx={{ mb: 3, color: 'text.primary', textAlign: 'center' }}
       >
-        Design Your Neural Network Architecture
+        Now Practice! Build your own neural network architecture
       </Typography>
 
       <Box sx={{ display: 'flex', gap: 3, alignItems: 'flex-start' }}>

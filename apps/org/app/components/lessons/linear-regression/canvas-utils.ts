@@ -98,3 +98,59 @@ export const clearCanvas = (
 ) => {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
 };
+
+export const calculateLineQuality = (
+  points: Point[],
+  line: LineSegment
+): number => {
+  if (!line) return 0;
+
+  const slope = (line.end.y - line.start.y) / (line.end.x - line.start.x);
+  const intercept = line.start.y - slope * line.start.x;
+
+  let totalError = 0;
+  points.forEach((point) => {
+    const expectedY = slope * point.x + intercept;
+    const error = Math.abs(point.y - expectedY);
+    totalError += error;
+  });
+
+  // Convert to a 0-100 score (lower error = higher score)
+  const avgError = totalError / points.length;
+  const maxError = 200; // Reasonable max error for scoring
+  return Math.max(0, Math.min(100, 100 - (avgError / maxError) * 100));
+};
+
+export const drawErrorLines = (
+  ctx: CanvasRenderingContext2D,
+  points: Point[],
+  line: LineSegment,
+  color = 'rgba(255, 0, 0, 0.3)'
+) => {
+  if (!line) return;
+
+  const slope = (line.end.y - line.start.y) / (line.end.x - line.start.x);
+  const intercept = line.start.y - slope * line.start.x;
+
+  ctx.strokeStyle = color;
+  ctx.lineWidth = 1;
+  ctx.setLineDash([5, 5]);
+
+  points.forEach((point) => {
+    const expectedY = slope * point.x + intercept;
+    ctx.beginPath();
+    ctx.moveTo(point.x, point.y);
+    ctx.lineTo(point.x, expectedY);
+    ctx.stroke();
+  });
+
+  ctx.setLineDash([]);
+};
+
+export const drawBestFitHint = (
+  ctx: CanvasRenderingContext2D,
+  bestFitLine: LineSegment,
+  color = 'rgba(0, 255, 0, 0.5)'
+) => {
+  drawLine(ctx, bestFitLine, color, 2, [10, 10]);
+};

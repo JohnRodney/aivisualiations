@@ -9,6 +9,15 @@ export default defineConfig(() => ({
   server: {
     port: 4200,
     host: 'localhost',
+    watch: {
+      usePolling: false,
+      ignored: ['**/node_modules/**', '**/manim-visuals/**'],
+    },
+    // Add specific MIME type for video files
+    middlewareMode: false,
+    fs: {
+      allow: ['..', '../..'],
+    },
   },
   preview: {
     port: 4300,
@@ -16,15 +25,28 @@ export default defineConfig(() => ({
   },
   plugins: [
     !process.env.VITEST && reactRouter(),
-    unusedCode({
-      patterns: ['app/**/*.*'],
-      exclude: ['**/*.spec.*', '**/*.test.*', '**/test*'],
-      detectUnusedFiles: true,
-      detectUnusedExport: true,
-      log: 'unused',
-      exportJSON: true,
-    }),
+    // Temporarily disable unused code plugin to reduce file system pressure
+    // unusedCode({
+    //   patterns: ['app/**/*.*'],
+    //   exclude: ['**/*.spec.*', '**/*.test.*', '**/test*'],
+    //   detectUnusedFiles: true,
+    //   detectUnusedExport: true,
+    //   log: 'unused',
+    //   exportJSON: true,
+    // }),
   ],
+  optimizeDeps: {
+    include: [
+      'react',
+      'react-dom',
+      'react-router',
+      '@mui/material',
+      '@mui/icons-material',
+      '@emotion/react',
+      '@emotion/styled',
+    ],
+    exclude: ['manim-visuals'],
+  },
   // Uncomment this if you are using workers.
   // worker: {
   //  plugins: [ nxViteTsPaths() ],

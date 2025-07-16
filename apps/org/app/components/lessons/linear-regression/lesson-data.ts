@@ -15,7 +15,7 @@ export const linearRegressionLessons: LessonData[] = [
         'Learn to visually identify which lines best represent the relationship in scattered data points.',
     },
     explanation:
-      'Start by exploring what makes one line better than another. Click and drag to draw different lines through the data points below.',
+      'Watch the 30-second video explanation first, then practice by drawing different lines through the data points to see what makes one line better than another.',
     canvasComponent: WhatIsLineCanvas,
     keyTakeaways: [
       'A good line should pass close to as many data points as possible',
